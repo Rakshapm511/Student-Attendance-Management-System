@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendance Report</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+    background:#001932;
+    color:white;
+    font-family:Arial;
+    padding:30px;
+}
+
+h2{
+    color:cyan;
+    text-align:center;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+}
+
+th,td{
+    border:1px solid cyan;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:cyan;
+    color:black;
+}
+
+canvas{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-top:30px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    background:cyan;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>📊 Attendance Report</h2>
+
+<table>
+
+<tr>
+    <th>Date</th>
+    <th>Subject</th>
+    <th>Present</th>
+    <th>Absent</th>
+</tr>
+
+{% for row in reports %}
+
+<tr>
+    <td>{{ row.date }}</td>
+    <td>{{ row.subject }}</td>
+    <td>{{ row.present_count }}</td>
+    <td>{{ row.absent_count }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<canvas id="attendanceChart"></canvas>
+
+<a href="/dashboard">
+<button>🏠 Back</button>
+</a>
+
+<script>
+
+const labels = [
+{% for row in reports %}
+"{{ row.date }} - {{ row.subject }}",
+{% endfor %}
+];
+
+const present = [
+{% for row in reports %}
+{{ row.present_count }},
+{% endfor %}
+];
+
+new Chart(document.getElementById('attendanceChart'),{
+
+type:'bar',
+
+data:{
+labels:labels,
+
+datasets:[{
+
+label:'Present Students',
+
+data:present,
+
+backgroundColor:'cyan'
+
+}]
+}
+
+});
+
+</script>
+
+</body>
+</html>
